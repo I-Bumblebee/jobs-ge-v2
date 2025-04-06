@@ -1,6 +1,9 @@
 import "~/assets/tailwind.css";
+import "~/assets/fonts.css";
 import {createApp} from 'vue';
 import App from './App.vue';
+import router from "@/entrypoints/jobs.content/router";
+import {createPinia} from "pinia";
 
 declare global {
     interface Window {
@@ -21,11 +24,6 @@ export default defineContentScript({
 
         const ui = await createShadowRootUi(ctx, {
             name: 'jobs-ge-v2',
-            // just clearing innerHTML isn't enough some event listeners wer still running
-            // append: (anchor, ui) => {
-            //     anchor.innerHTML = '';
-            //     anchor.appendChild(ui);
-            // },
             append: 'replace',
             position: 'inline',
             anchor: 'body',
@@ -33,6 +31,8 @@ export default defineContentScript({
                 const app = createApp(App, {
                     originalContent: window.__ORIGINAL_BODY_CONTENT__
                 });
+                app.use(createPinia());
+                app.use(router)
                 app.mount(container);
                 return app;
             },

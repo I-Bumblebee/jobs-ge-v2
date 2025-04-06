@@ -1,24 +1,37 @@
 <script lang="ts" setup>
-import HelloWorld from '@/components/HelloWorld.vue';
+import {HOME, TEST} from "@/entrypoints/jobs.content/constants/pageNames"
+import {usePageRouter} from "@/entrypoints/jobs.content/composables/usePageRouter";
+
+const {parseAndRedirect} = usePageRouter()
 
 const props = defineProps<{
-  originalContent?: string
+  originalContent: string
 }>();
+
+onMounted(() => {
+  parseAndRedirect(props.originalContent)
+})
 </script>
 
 <template>
-  <div class="w-full px-4 bg-white">
-    <a href="https://wxt.dev" target="_blank">
-      <img src="@/assets/wxt.svg" class="logo" alt="WXT logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="@/assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-    <HelloWorld msg="WXT + Vue" />
+  <div class="bg-[#161C24] flex flex-col">
+    <RouterLink :to="{ name: HOME }" class="text-blue-500 underline mr-4">Home</RouterLink>
+    <RouterLink :to="{ name: TEST }" class="text-blue-500 underline">Test</RouterLink>
 
-    <div v-if="originalContent">
-      amazing
-       <div v-html="originalContent"></div>
+    <div class="container self-center">
+      <RouterView/>
+    </div>
+
+    <div class="w-full px-4 bg-white">
+      <div v-if="originalContent">
+        <div v-html="originalContent"/>
+      </div>
     </div>
   </div>
 </template>
+
+<style>
+* {
+  font-family: "Helvetica Neue", 'Helvetica', serif;
+}
+</style>
