@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import {computed, defineEmits, defineProps, ref} from 'vue'
+import {defineEmits, defineProps, ref} from 'vue'
 import placeholderLogo from "@/assets/company-logo-placeholder.png"
 import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
 import {useFavorites} from "@/entrypoints/jobs.content/composables/useFavorites";
+import {JOBS_SUB} from "@/entrypoints/jobs.content/constants/pageNames";
+import {getPublishTimeText} from "../utils/dateUtils";
 
-interface Props {
+interface PropsType {
   job: ParsedJobRow
 }
 
-const props = defineProps<Props>()
-
-const emit = defineEmits<{
-  (e: 'card-click', jobId: string | null): void
-}>()
+const props = defineProps<PropsType>()
+const emit = defineEmits<{ (e: 'card-click', jobId: string | null): void }>()
 
 const {addFavorite, removeFavorite} = useFavorites()
 
@@ -21,36 +20,20 @@ const isFavorite = ref(props.job.metadata.isFavorite);
 const toggleFavorite = () => {
   if (isFavorite.value) {
     isFavorite.value = false;
-    removeFavorite(String(props.job.id))
+    removeFavorite(String(props.job.id));
   } else {
+
     isFavorite.value = true;
-    addFavorite(String(props.job.id))
+    addFavorite(String(props.job.id));
   }
-}
-
-const publishTimeText = computed(() => {
-  if (!props.job.dates.published) return 'No publish date'
-
-  const today = new Date()
-  const published = props.job.dates.published
-  const daysSincePublish = Math.floor(
-      (today.getTime() - published.getTime()) / (1000 * 60 * 60 * 24)
-  )
-
-  if (daysSincePublish === 0) return "Published today"
-  if (daysSincePublish === 1) return "Published yesterday"
-  return `${daysSincePublish} days ago`
-})
-
-const handleCardClick = () => {
-  emit('card-click', props.job.id)
 }
 </script>
 
 <template>
-  <div
+  <RouterLink
+      :to="{ name: JOBS_SUB, params: { id: job.id } }"
       class="max-w-[28rem] cursor-pointer bg-[#161C24] hover:bg-[#212A36] hover:rounded-[1.2rem] hover:shadow-md transition-all duration-300"
-      @click="handleCardClick"
+      @click="() => emit('card-click', props.job.id)"
   >
     <div class="flex p-4 gap-4">
       <div class="w-24 h-24 flex-shrink-0 relative">
@@ -71,14 +54,15 @@ const handleCardClick = () => {
             </div>
           </div>
 
+          <!-- TODO: For Next Iteration Use Float Right and Put It In Same Container As the Title -->
           <button
-              class="flex-shrink-0 bg-transparent border-none cursor-pointer p-0"
-              @click.stop="toggleFavorite"
+              class="flex-shrink-0 bg-transparent cursor-pointer p-1 hover:bg-[#212A36] rounded-full transition-colors duration-300"
+              @click.prevent="toggleFavorite"
           >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 class="stroke-gray-500 fill-none hover:stroke-yellow-500 transition-colors duration-300 stroke-[1.5px] hover:stroke-2"
                 :class="{ 'stroke-yellow-500 fill-yellow-500': isFavorite }"
@@ -94,7 +78,7 @@ const handleCardClick = () => {
         <div class="flex flex-wrap gap-2 mb-4 text-white/90">
           <span
               v-if="job.metadata.isNew"
-              class="text-xs py-1 px-2 rounded font-extrabold bg-blue-900 text-white/95 font-serif"
+              class="text-xs py-1 px-2 rounded font-extrabold bg-blue-900 text-white/95"
           >
             NEW
           </span>
@@ -129,11 +113,11 @@ const handleCardClick = () => {
         </div>
 
         <div class="text-xs text-gray-400">
-          {{ publishTimeText }}
+          {{ getPublishTimeText(job.dates.published) }}
         </div>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>

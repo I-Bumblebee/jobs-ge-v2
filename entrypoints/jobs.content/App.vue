@@ -1,22 +1,13 @@
 <script lang="ts" setup>
-import {HOME, TEST} from "@/entrypoints/jobs.content/constants/pageNames"
-import {usePageRouter} from "@/entrypoints/jobs.content/composables/usePageRouter";
+import {HOME, JOBS} from "@/entrypoints/jobs.content/constants/pageNames"
 
-const {parseAndRedirect} = usePageRouter()
-
-const props = defineProps<{
-  originalContent: string
-}>();
-
-onMounted(() => {
-  parseAndRedirect(props.originalContent)
-})
+const props = defineProps<{ originalContent: string }>();
 </script>
 
 <template>
   <div class="bg-[#161C24] flex flex-col">
     <RouterLink :to="{ name: HOME }" class="text-blue-500 underline mr-4">Home</RouterLink>
-    <RouterLink :to="{ name: TEST }" class="text-blue-500 underline">Test</RouterLink>
+    <RouterLink :to="{ name: JOBS }" class="text-blue-500 underline">Test</RouterLink>
 
     <div class="container self-center">
       <RouterView/>

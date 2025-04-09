@@ -1,15 +1,12 @@
 import {defineStore} from 'pinia'
-import {HOME, PageName, TEST} from '@/entrypoints/jobs.content/constants/pageNames'
-import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
-
-export interface TestPageProps {
-    jobList: ParsedJobRow[]
-}
-
-interface HomePageProps { }
+import {HOME, PageName, JOBS, JOBS_SUB} from '@/entrypoints/jobs.content/constants/pageNames'
+import {JobsPageProps} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
+import {SubPageProps} from "@/entrypoints/jobs.content/pages/SubPage.vue";
+import {HomePageProps} from "@/entrypoints/jobs.content/pages/HomePage.vue";
 
 type PagePropsMap = {
-    [TEST]: TestPageProps
+    [JOBS]: JobsPageProps
+    [JOBS_SUB]: SubPageProps
     [HOME]: HomePageProps
 }
 
@@ -33,7 +30,7 @@ export const usePagePropsStore = defineStore('pageData', {
         },
 
         clearPageData(pageName: PageName) {
-            this.pageProps[pageName] = undefined
+            delete this.pageProps[pageName];
         }
     },
 

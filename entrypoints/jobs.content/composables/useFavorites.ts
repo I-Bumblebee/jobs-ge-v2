@@ -1,4 +1,4 @@
-import {CookieManager, CookieSaveOptions} from "@/entrypoints/jobs.content/services/CookieManager";
+import {cookieManager, CookieSaveOptions} from "@/entrypoints/jobs.content/services/CookieManager";
 
 export function useFavorites(options: {
     cookieName?: string;
@@ -16,7 +16,7 @@ export function useFavorites(options: {
     };
 
     const getFavorites = (): string[] => {
-        const cookieValue = CookieManager.getCookie(cookieName) || '';
+        const cookieValue = cookieManager.getCookie(cookieName) || '';
         return cookieValue
             ? cookieValue.split(',').map((id: string) => id.trim()).filter(Boolean)
             : [];
@@ -37,7 +37,7 @@ export function useFavorites(options: {
 
         const updatedFavorites = [...currentFavorites, jobId];
 
-        CookieManager.setCookie(
+        cookieManager.setCookie(
             cookieName,
             updatedFavorites.join(','),
             cookieOptions
@@ -53,7 +53,7 @@ export function useFavorites(options: {
         const updatedFavorites = currentFavorites.filter(id => id !== jobId);
 
         if (updatedFavorites.length !== currentFavorites.length) {
-            CookieManager.setCookie(
+            cookieManager.setCookie(
                 cookieName,
                 updatedFavorites.join(','),
                 cookieOptions
@@ -77,7 +77,7 @@ export function useFavorites(options: {
     }
 
     const clearFavorites = (): void => {
-        CookieManager.deleteCookie(cookieName);
+        cookieManager.deleteCookie(cookieName);
         favorites.value = [];
     }
 

@@ -1,3 +1,5 @@
+import {JobDates, parseDate} from "@/entrypoints/jobs.content/parsers/jobDatesParser";
+
 interface JobMetadata {
     isFavorite: boolean;
     isExpiring: boolean;
@@ -13,11 +15,6 @@ interface JobCompany {
     logoSrc: string;
 }
 
-interface JobDates {
-    published: Date | null;
-    deadline: Date | null;
-}
-
 export interface ParsedJobRow {
     id: string | null;
     title: string;
@@ -25,67 +22,6 @@ export interface ParsedJobRow {
     metadata: JobMetadata;
     company: JobCompany;
     dates: JobDates;
-}
-
-export interface JobDescription {
-    title: string;
-    isFavorite: boolean;
-    releaseDate: Date | null;
-    deadline: Date | null;
-    description: string;
-}
-
-const parseDate = (dateStr: string): Date | null => {
-    if (!dateStr) return null;
-
-    const georgianMonths = [
-        "იანვარი",
-        "თებერვალი",
-        "მარტი",
-        "აპრილი",
-        "მაისი",
-        "ინვისი",
-        "ივლისი",
-        "აგვისტო",
-        "სექტემბერი",
-        "ოქტომბერი",
-        "ნოემბერი",
-        "დეკემბერი",
-    ];
-
-    const englishMonths = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-
-    const parts = dateStr.trim().split(" ");
-
-    if (parts.length < 2) return null;
-
-    const day = parseInt(parts[0], 10);
-    const monthStr = parts[1];
-
-    const currentYear = new Date().getFullYear();
-
-    let month = georgianMonths.indexOf(monthStr);
-
-    if (month === -1) {
-        month = englishMonths.indexOf(monthStr);
-    }
-
-    if (month === -1) return null;
-
-    return new Date(currentYear, month, day);
 }
 
 const parseJobListTableRow = (row: HTMLTableRowElement): ParsedJobRow => {
