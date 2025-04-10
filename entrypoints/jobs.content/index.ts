@@ -5,11 +5,6 @@ import App from './App.vue';
 import router from "@/entrypoints/jobs.content/router";
 import {createPinia} from "pinia";
 
-declare global {
-    interface Window {
-        __ORIGINAL_BODY_CONTENT__?: string;
-    }
-}
 
 export default defineContentScript({
     matches: ['*://*.jobs.ge/*'],
@@ -17,12 +12,7 @@ export default defineContentScript({
     cssInjectionMode: 'ui',
 
     async main(ctx) {
-        await injectScript('/jobs-injected.js', {
-            keepInDom: true,
-        });
-
-        document.open();
-        document.write(`
+        const newHTML = `
           <!DOCTYPE html>
           <html>
             <head>
@@ -34,8 +24,19 @@ export default defineContentScript({
               <div id="jobs-ge-app-root"></div>
             </body>
           </html>
-        `);
-        document.close();
+        `;
+
+        const newDoc = document.implementation.createHTMLDocument();
+        newDoc.documentElement.innerHTML = newHTML;
+
+        document.replaceChild(
+            document.importNode(newDoc.documentElement, true),
+            document.documentElement
+        );
+
+        await injectScript('/jobs-injected.js', {
+            keepInDom: true,
+        });
 
         const ui = await createShadowRootUi(ctx, {
             name: 'jobs-ge-v2',
@@ -43,20 +44,16 @@ export default defineContentScript({
             position: 'inline',
             anchor: '#jobs-ge-app-root',
             onMount: (container) => {
-                const app = createApp(App, {
-                    originalContent: window.__ORIGINAL_BODY_CONTENT__
-                });
+                const app = createApp(App);
                 app.use(createPinia());
-                app.use(router)
+                app.use(router);
                 app.mount(container);
                 return app;
             },
             onRemove: (app) => {
                 app?.unmount();
-                delete window.__ORIGINAL_BODY_CONTENT__;
             },
         });
-
         ui.mount();
     },
 });
