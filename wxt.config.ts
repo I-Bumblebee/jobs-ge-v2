@@ -15,7 +15,8 @@ export default defineConfig({
     },
     permissions: [
       "declarativeNetRequest",
-      "declarativeNetRequestWithHostAccess"
+      "declarativeNetRequestWithHostAccess",
+      "webNavigation",
     ],
     web_accessible_resources: [
       {

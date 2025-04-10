@@ -3,22 +3,28 @@
     "id": 1,
     "priority": 1,
     "action": { "type": "block" },
-    "condition": { "urlFilter": "*.js", "resourceTypes": ["script"] }
+    "condition": { "initiatorDomains": ["jobs.ge"], "resourceTypes": ["script"] }
   },
   {
     "id": 2,
     "priority": 1,
     "action": { "type": "block" },
-    "condition": { "urlFilter": "*.css", "resourceTypes": ["stylesheet"] }
+    "condition": { "initiatorDomains": ["jobs.ge"], "resourceTypes": ["stylesheet"] }
   },
   {
     "id": 3,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": { "initiatorDomains": ["jobs.ge"], "resourceTypes": ["image"] }
+  },
+  {
+    "id": 4,
     "priority": 2,
     "action": { "type": "allow" },
     "condition": { "urlFilter": "extension://*", "resourceTypes": ["script", "stylesheet"] }
   },
   {
-    "id": 4,
+    "id": 5,
     "priority": 2,
     "action": { "type": "allow" },
     "condition": { "urlFilter": "chrome-extension://*", "resourceTypes": ["script", "stylesheet"] }
