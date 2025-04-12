@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import {ParsedJobView} from "@/entrypoints/jobs.content/parsers/jobviewPageParser";
-import {onBeforeRouteUpdate, useRoute} from "vue-router";
+import {onBeforeRouteUpdate} from "vue-router";
 import {getDeadlineText, getPublishTimeText} from "@/entrypoints/jobs.content/utils/dateUtils";
 import {fetchJobByIdMiddleware} from "@/entrypoints/jobs.content/router/routeMiddleware";
+import {useBulletListExtractor} from "@/entrypoints/jobs.content/composables/useBulletListExtractor";
+import BulletListCard from "@/entrypoints/jobs.content/components/BulletListCard.vue";
 
 export interface SubPageProps {
   jobDescription: ParsedJobView
 }
-const {jobDescription} = defineProps<SubPageProps>();
 
-const isFavorite = ref(jobDescription.isFavorite)
+const props = defineProps<SubPageProps>();
+const jobDescriptionRef = computed(() => props.jobDescription);
+
+const isFavorite = ref(props.jobDescription.isFavorite)
 
 const toggleFavorite = () => {
   isFavorite.value = !isFavorite.value;
 }
 
-const route = useRoute();
-
-const onDescriptionDownload = async () => {
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([jobDescription.description], {type: "text/plain;charset=utf-8"}));
-  a.setAttribute("download", `job-description-${route.params.id}.txt`);
-  a.click();
-}
+const {reachDescription} = useBulletListExtractor(jobDescriptionRef);
 
 onBeforeRouteUpdate(fetchJobByIdMiddleware)
 </script>
@@ -34,10 +31,6 @@ onBeforeRouteUpdate(fetchJobByIdMiddleware)
       <h1 class="text-2xl font-bold text-white break-words mr-4">
         {{ jobDescription.title }}
       </h1>
-
-      <button @click="onDescriptionDownload">
-        Download Description
-      </button>
 
       <button
           class="flex-shrink-0 bg-transparent cursor-pointer p-1 hover:bg-[#212A36] rounded-full transition-colors duration-300"
@@ -67,8 +60,16 @@ onBeforeRouteUpdate(fetchJobByIdMiddleware)
       </span>
     </div>
 
-    <div class="border-1 border-white rounded-xl p-5 mb-6 leading-relaxed text-xl">
-      <div class="text-white/90" v-html="jobDescription.description"></div>
+    <div class="border-1 border-white rounded-xl p-5 leading-relaxed text-xl">
+      <div class="text-white/90 flex flex-col gap-10">
+        <template v-for="(item, index) in reachDescription" :key="index">
+          <div v-if="item.type === 'text'" v-html="item.content"/>
+          <BulletListCard
+              v-else
+              v-bind="item.props"
+          />
+        </template>
+      </div>
     </div>
   </div>
 </template>

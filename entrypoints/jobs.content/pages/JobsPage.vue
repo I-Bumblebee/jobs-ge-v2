@@ -10,18 +10,18 @@ const props = defineProps<JobsPageProps>()
 </script>
 
 <template>
-  <div class="flex flex-row gap-32">
-    <div class="w-1/3 lg:w-auto lg:flex-shrink-0">
+  <div class="flex flex-row gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 2xl:gap-24">
+    <div class="w-1/3 lg:w-1/4 xl:w-2/5">
       <div
           v-if="jobList.length === 0"
-          class="text-center text-gray-400 py-10"
+          class="text-center text-gray-400 py-6 sm:py-8 md:py-10"
       >
         No jobs available
       </div>
 
       <div
           v-else
-          class="flex flex-col flex-nowrap gap-1"
+          class="flex flex-col flex-nowrap gap-1 sm:gap-2 md:gap-3"
       >
         <JobCard
             v-for="job in jobList"
@@ -31,9 +31,9 @@ const props = defineProps<JobsPageProps>()
       </div>
     </div>
 
-    <div class="w-2/3 lg:flex-grow lg:w-auto relative overflow-hidden">
+    <div class="w-2/3 lg:w-3/4 xl:w-4/5 relative">
       <div
-          class="fixed top-auto h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar p-4 rounded-2xl frosted-container"
+          class="sticky top-6 max-h-screen md:h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar p-2 sm:p-3 md:p-4 rounded-lg md:rounded-xl lg:rounded-2xl frosted-container"
       >
         <RouterView/>
       </div>
