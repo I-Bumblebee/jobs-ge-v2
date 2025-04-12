@@ -25,7 +25,7 @@ const props = defineProps<JobsPageProps>()
       >
         <JobCard
             v-for="job in jobList"
-            :key="String(job.id)"
+            :key="job.id as string"
             :job="job"
         />
       </div>

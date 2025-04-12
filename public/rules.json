@@ -28,5 +28,15 @@
     "priority": 2,
     "action": { "type": "allow" },
     "condition": { "urlFilter": "chrome-extension://*", "resourceTypes": ["script", "stylesheet"] }
+  },
+  {
+    "id": 6,
+    "priority": 2,
+    "action": { "type": "allow" },
+    "condition": {
+      "initiatorDomains": ["jobs.ge"],
+      "urlFilter": "favicon.ico",
+      "resourceTypes": ["image"]
+    }
   }
 ]

@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import {ParsedJobView} from "@/entrypoints/jobs.content/parsers/jobviewPageParser";
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
-import {getDeadlineText, getPublishTimeText} from "../utils/dateUtils";
+import {getDeadlineText, getPublishTimeText} from "@/entrypoints/jobs.content/utils/dateUtils";
 import {fetchJobByIdMiddleware} from "@/entrypoints/jobs.content/router/routeMiddleware";
 
 export interface SubPageProps {
@@ -19,43 +19,12 @@ const toggleFavorite = () => {
 const route = useRoute();
 
 const onDescriptionDownload = async () => {
-  console.log(extractSection(jobDescription.description))
-  // return;
-  // const a = document.createElement("a");
-  // a.href = URL.createObjectURL(new Blob([jobDescription.description], {type: "text/plain;charset=utf-8"}));
-  // a.setAttribute("download", `job-description-${route.params.id}.txt`);
-  // a.click();
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([jobDescription.description], {type: "text/plain;charset=utf-8"}));
+  a.setAttribute("download", `job-description-${route.params.id}.txt`);
+  a.click();
 }
-function extractSection(text) {
-  // More robust regex to handle various bullet point formats
-  const sectionRegex = /([^\n:]+):\s*(?:<br>\s*)*\n?\s*((?:\*\*.*?(?:;)?(?:<br>|\n))+)/s;
 
-  const match = text.match(sectionRegex);
-
-  if (match) {
-    // Extract title (first capturing group)
-    const title = match[1].trim();
-
-    // Extract and process the bullet points (second capturing group)
-    const bulletPointsText = match[2];
-    const bulletPoints = bulletPointsText
-        .split('**')
-        .filter(point => point.trim() !== '')
-        .map(point =>
-            point
-                .replace(/(?:<br>|\n)\s*/g, '')
-                .replace(/;$/, '')  // Remove trailing semicolon
-                .trim()
-        );
-
-    return {
-      title: title,
-      points: bulletPoints
-    };
-  }
-
-  return null;
-}
 onBeforeRouteUpdate(fetchJobByIdMiddleware)
 </script>
 

@@ -3,7 +3,7 @@ import {defineEmits, defineProps, ref} from 'vue'
 import placeholderLogo from "@/assets/company-logo-placeholder.png"
 import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
 import {useFavorites} from "@/entrypoints/jobs.content/composables/useFavorites";
-import {JOBS_SUB} from "@/entrypoints/jobs.content/constants/pageNames";
+import {JOB_VIEW} from "@/entrypoints/jobs.content/constants/pageNames";
 import {getPublishTimeText} from "../utils/dateUtils";
 
 interface PropsType {
@@ -22,7 +22,6 @@ const toggleFavorite = () => {
     isFavorite.value = false;
     removeFavorite(String(props.job.id));
   } else {
-
     isFavorite.value = true;
     addFavorite(String(props.job.id));
   }
@@ -31,7 +30,7 @@ const toggleFavorite = () => {
 
 <template>
   <RouterLink
-      :to="{ name: JOBS_SUB, params: { id: job.id } }"
+      :to="{ name: JOB_VIEW, params: { id: job.id } }"
       class="max-w-[28rem] cursor-pointer bg-[#161C24] hover:bg-[#212A36] hover:rounded-[1.2rem] hover:shadow-md transition-all duration-300"
       @click="() => emit('card-click', props.job.id)"
   >

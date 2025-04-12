@@ -1,12 +1,12 @@
 import {defineStore} from 'pinia'
-import {HOME, PageName, JOBS, JOBS_SUB} from '@/entrypoints/jobs.content/constants/pageNames'
+import {HOME, PageName, JOBS, JOB_VIEW} from '@/entrypoints/jobs.content/constants/pageNames'
 import {JobsPageProps} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
-import {SubPageProps} from "@/entrypoints/jobs.content/pages/SubPage.vue";
+import {SubPageProps} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
 import {HomePageProps} from "@/entrypoints/jobs.content/pages/HomePage.vue";
 
 type PagePropsMap = {
     [JOBS]: JobsPageProps
-    [JOBS_SUB]: SubPageProps
+    [JOB_VIEW]: SubPageProps
     [HOME]: HomePageProps
 }
 

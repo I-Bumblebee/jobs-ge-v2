@@ -2,7 +2,7 @@ import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 import { usePagePropsStore } from "@/entrypoints/jobs.content/stores/pagePropsStore";
 import { jobService } from "@/entrypoints/jobs.content/services/JobService";
 // import { jobService } from "@/entrypoints/jobs.content/services/MockJobService";
-import { JOBS, JOBS_SUB } from "@/entrypoints/jobs.content/constants/pageNames";
+import { JOBS, JOB_VIEW } from "@/entrypoints/jobs.content/constants/pageNames";
 
 export const fetchJobListMiddleware = async (
     to: RouteLocationNormalized,
@@ -29,7 +29,7 @@ export const fetchJobByIdMiddleware = async (
         const jobId = to.params.id as string;
         const pagePropsStore = usePagePropsStore();
         const jobDescription = await jobService.fetchJobById(jobId);
-        pagePropsStore.setPageProps(JOBS_SUB, { jobDescription });
+        pagePropsStore.setPageProps(JOB_VIEW, { jobDescription });
         next();
     } catch (e) {
         console.error('Error in fetchJobByIdMiddleware:', e);

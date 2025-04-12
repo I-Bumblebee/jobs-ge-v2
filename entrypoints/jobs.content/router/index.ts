@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
 import HomePage from "@/entrypoints/jobs.content/pages/HomePage.vue";
 import JobsPage from "@/entrypoints/jobs.content/pages/JobsPage.vue";
-import { HOME, JOBS, JOBS_SUB } from "@/entrypoints/jobs.content/constants/pageNames";
-import SubPage from "@/entrypoints/jobs.content/pages/SubPage.vue";
+import { HOME, JOBS, JOB_VIEW } from "@/entrypoints/jobs.content/constants/pageNames";
+import JobViewPage from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
 import { usePagePropsStore } from "@/entrypoints/jobs.content/stores/pagePropsStore";
 import { fetchJobListMiddleware, fetchJobByIdMiddleware } from "@/entrypoints/jobs.content/router/routeMiddleware";
 
@@ -21,10 +21,10 @@ const routes: Array<RouteRecordRaw> = [
         children: [
             {
                 path: ":id",
-                name: JOBS_SUB,
-                component: SubPage,
+                name: JOB_VIEW,
+                component: JobViewPage,
                 beforeEnter: fetchJobByIdMiddleware,
-                props: () => usePagePropsStore().getPageProps(JOBS_SUB)
+                props: () => usePagePropsStore().getPageProps(JOB_VIEW)
             }
         ]
     }

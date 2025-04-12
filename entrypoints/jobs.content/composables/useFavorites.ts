@@ -81,13 +81,6 @@ export function useFavorites(options: {
         favorites.value = [];
     }
 
-    const fetchFavoritesPage = (): Promise<Response> => {
-        return fetch('https://jobs.ge/ge/?view=favourites', {
-            method: 'GET',
-            credentials: 'include'
-        });
-    }
-
     return {
         favorites,
         addFavorite,
@@ -95,6 +88,5 @@ export function useFavorites(options: {
         isFavorite,
         toggleFavorite,
         clearFavorites,
-        fetchFavoritesPage
     }
 }

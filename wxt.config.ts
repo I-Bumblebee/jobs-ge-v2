@@ -21,7 +21,7 @@ export default defineConfig({
     web_accessible_resources: [
       {
         resources: ["jobs-injected.js"],
-        matches: ["*://*/*"],
+        matches: ["*://*.jobs.ge/*"],
       }
     ]
   }
