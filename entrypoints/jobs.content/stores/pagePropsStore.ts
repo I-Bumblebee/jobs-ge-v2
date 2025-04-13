@@ -1,12 +1,13 @@
 import {defineStore} from 'pinia'
-import {HOME, PageName, JOBS, JOB_VIEW} from '@/entrypoints/jobs.content/constants/pageNames'
+import {HOME, PageName, JOBS, JOB_VIEW_IN_LIST, JOB_VIEW} from '@/entrypoints/jobs.content/constants/pageNames'
 import {JobsPageProps} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
-import {SubPageProps} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
+import {JobViewPageProps} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
 import {HomePageProps} from "@/entrypoints/jobs.content/pages/HomePage.vue";
 
 type PagePropsMap = {
     [JOBS]: JobsPageProps
-    [JOB_VIEW]: SubPageProps
+    [JOB_VIEW_IN_LIST]: JobViewPageProps
+    [JOB_VIEW]: JobViewPageProps
     [HOME]: HomePageProps
 }
 
@@ -15,7 +16,7 @@ interface PagePropsState {
     pageProps: Partial<PagePropsMap>
 }
 
-export const usePagePropsStore = defineStore('pageData', {
+export const usePagePropsStore = defineStore('pageProps', {
     state: (): PagePropsState => ({
         commonData: '',
         pageProps: {}

@@ -1,23 +1,38 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 import {ParsedJobView} from "@/entrypoints/jobs.content/parsers/jobviewPageParser";
-import {onBeforeRouteUpdate} from "vue-router";
+import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import {getDeadlineText, getPublishTimeText} from "@/entrypoints/jobs.content/utils/dateUtils";
 import {fetchJobByIdMiddleware} from "@/entrypoints/jobs.content/router/routeMiddleware";
 import {useBulletListExtractor} from "@/entrypoints/jobs.content/composables/useBulletListExtractor";
 import BulletListCard from "@/entrypoints/jobs.content/components/BulletListCard.vue";
+import StarIcon from "@/entrypoints/jobs.content/components/icons/StarIcon.vue";
+import {buildCompanyProfileUrl, buildJobViewUrl} from "../utils/urlUtils";
+import LinkPlusIcon from "@/entrypoints/jobs.content/components/icons/LinkPlusIcon.vue";
+import ExternalLinkIcon from "@/entrypoints/jobs.content/components/icons/ExternalLinkIcon.vue";
+import ListSearchIcon from "@/entrypoints/jobs.content/components/icons/ListSearchIcon.vue";
+import {JOB_VIEW} from "@/entrypoints/jobs.content/constants/pageNames"
 
-export interface SubPageProps {
+export interface JobViewPageProps {
   jobDescription: ParsedJobView
 }
 
-const props = defineProps<SubPageProps>();
+const props = defineProps<JobViewPageProps>();
 const jobDescriptionRef = computed(() => props.jobDescription);
 
-const isFavorite = ref(props.jobDescription.isFavorite)
+const router = useRouter();
+
+const isFavorite = ref(props.jobDescription.isFavorite);
+const copied = ref(false);
 
 const toggleFavorite = () => {
   isFavorite.value = !isFavorite.value;
+}
+
+const copyLink = () => {
+  navigator.clipboard.writeText(buildJobViewUrl(props.jobDescription.id));
+  copied.value = true;
+  setTimeout(() => copied.value = false, 1500);
 }
 
 const {reachDescription} = useBulletListExtractor(jobDescriptionRef);
@@ -28,27 +43,49 @@ onBeforeRouteUpdate(fetchJobByIdMiddleware)
 <template>
   <div class="flex flex-col max-w-5xl w-full">
     <div class="flex justify-between items-start mb-6">
-      <h1 class="text-2xl font-bold text-white break-words mr-4">
+      <h1 class="text-3xl font-bold text-white break-words mr-4">
         {{ jobDescription.title }}
       </h1>
 
-      <button
-          class="flex-shrink-0 bg-transparent cursor-pointer p-1 hover:bg-[#212A36] rounded-full transition-colors duration-300"
-          @click="toggleFavorite"
-      >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            class="stroke-gray-500 fill-none hover:stroke-yellow-500 transition-colors duration-300 stroke-[1.5px] hover:stroke-2"
-            :class="{ 'stroke-yellow-500 fill-yellow-500': jobDescription.isFavorite }"
+      <div class="flex items-center gap-1">
+        <!-- Open in New Tab -->
+        <a
+            :href="router.resolve({ name: JOB_VIEW, params: { id: jobDescription.id } }).href"
+            target="_blank"
+            class="p-2 rounded-full hover:bg-[#212A36] transition-colors"
         >
-          <polygon
-              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-          ></polygon>
-        </svg>
-      </button>
+          <ExternalLinkIcon class="stroke-gray-500 hover:stroke-blue-500 transition-colors stroke-[1.5px]" />
+        </a>
+
+        <!-- Copy Link -->
+        <button @click="copyLink" class="p-2 rounded-full hover:bg-[#212A36] transition-colors relative">
+          <LinkPlusIcon class="stroke-gray-500 hover:stroke-green-500 transition-colors stroke-[1.5px]" :class="{ 'stroke-green-500': copied }" />
+        </button>
+
+        <!-- View Company Listings -->
+        <a
+            v-if="jobDescription.company.id"
+            :href="buildCompanyProfileUrl(jobDescription.company.id)"
+            target="_blank"
+            class="p-2 rounded-full hover:bg-[#212A36] transition-colors"
+        >
+          <ListSearchIcon class="stroke-gray-500 hover:stroke-purple-500 transition-colors stroke-[1.5px]" />
+        </a>
+        <div v-else class="p-2">
+          <ListSearchIcon class="stroke-gray-500/50 transition-colors stroke-[1.5px]" />
+        </div>
+
+        <!-- Favorite Button -->
+        <button
+            class="p-2 rounded-full hover:bg-[#212A36] transition-colors"
+            @click="toggleFavorite"
+        >
+          <StarIcon
+              class="stroke-gray-500 fill-none hover:stroke-yellow-500 transition-colors stroke-2"
+              :class="{ 'stroke-yellow-500 fill-yellow-500': isFavorite }"
+          />
+        </button>
+      </div>
     </div>
 
     <div class="flex flex-wrap gap-3 mb-6 text-sm">

@@ -3,8 +3,9 @@ import {defineEmits, defineProps, ref} from 'vue'
 import placeholderLogo from "@/assets/company-logo-placeholder.png"
 import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
 import {useFavorites} from "@/entrypoints/jobs.content/composables/useFavorites";
-import {JOB_VIEW} from "@/entrypoints/jobs.content/constants/pageNames";
+import {JOB_VIEW_IN_LIST} from "@/entrypoints/jobs.content/constants/pageNames";
 import {getPublishTimeText} from "../utils/dateUtils";
+import StarIcon from "@/entrypoints/jobs.content/components/icons/StarIcon.vue";
 
 interface PropsType {
   job: ParsedJobRow
@@ -18,19 +19,19 @@ const {addFavorite, removeFavorite} = useFavorites()
 const isFavorite = ref(props.job.metadata.isFavorite);
 
 const toggleFavorite = () => {
-  if (isFavorite.value) {
-    isFavorite.value = false;
-    removeFavorite(String(props.job.id));
-  } else {
-    isFavorite.value = true;
-    addFavorite(String(props.job.id));
-  }
+  // if (isFavorite.value) {
+  //   isFavorite.value = false;
+  //   removeFavorite(String(props.job.id));
+  // } else {
+  //   isFavorite.value = true;
+  //   addFavorite(String(props.job.id));
+  // }
 }
 </script>
 
 <template>
   <RouterLink
-      :to="{ name: JOB_VIEW, params: { id: job.id } }"
+      :to="{ name: JOB_VIEW_IN_LIST, params: { id: job.id } }"
       class="max-w-[28rem] cursor-pointer bg-[#161C24] hover:bg-[#212A36] hover:rounded-[1.2rem] hover:shadow-md transition-all duration-300"
       @click="() => emit('card-click', props.job.id)"
   >
@@ -58,18 +59,10 @@ const toggleFavorite = () => {
               class="flex-shrink-0 bg-transparent cursor-pointer p-1 hover:bg-[#212A36] rounded-full transition-colors duration-300"
               @click.prevent="toggleFavorite"
           >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
+            <StarIcon
                 class="stroke-gray-500 fill-none hover:stroke-yellow-500 transition-colors duration-300 stroke-[1.5px] hover:stroke-2"
                 :class="{ 'stroke-yellow-500 fill-yellow-500': isFavorite }"
-            >
-              <polygon
-                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-              ></polygon>
-            </svg>
+            />
           </button>
         </div>
 

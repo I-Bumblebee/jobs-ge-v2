@@ -1,6 +1,7 @@
 import jobListTableParser, {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
 import jobViewPageParser, {ParsedJobView} from "@/entrypoints/jobs.content/parsers/jobviewPageParser";
 import {cookieManager} from "@/entrypoints/jobs.content/services/CookieManager";
+import {buildJobViewUrl, buildJobListUrl} from "@/entrypoints/jobs.content/utils/urlUtils";
 
 export class JobService {
     getLocal(): string {
@@ -9,7 +10,7 @@ export class JobService {
 
     async fetchJobList(): Promise<ParsedJobRow[]> {
         try {
-            const response = await fetch(`https://jobs.ge/${this.getLocal()}`);
+            const response = await fetch(buildJobListUrl(this.getLocal()));
             const rawHtml = await response.text();
 
             const parser = new DOMParser();
@@ -23,7 +24,7 @@ export class JobService {
 
     async fetchJobById(jobId: string): Promise<ParsedJobView> {
         try {
-            const response = await fetch(`https://jobs.ge/${this.getLocal()}/?view=jobs&id=${jobId}`);
+            const response = await fetch(buildJobViewUrl(jobId, this.getLocal()));
             const rawHtml = await response.text();
 
             const parser = new DOMParser();

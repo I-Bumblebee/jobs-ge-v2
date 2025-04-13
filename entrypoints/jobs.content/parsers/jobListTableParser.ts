@@ -27,7 +27,7 @@ export interface ParsedJobRow {
 const parseJobListTableRow = (row: HTMLTableRowElement): ParsedJobRow => {
     const starCell = row.querySelector("td:nth-child(1)");
     const starIcon = starCell?.querySelector("img") as HTMLImageElement;
-    const isFavorite = starIcon ? !starIcon.src.includes("unstar") : false;
+    const isFavorite = !starIcon.src.includes("unstar");
 
     const titleCell = row.querySelector("td:nth-child(2)");
     const jobLink = titleCell?.querySelector("a") as HTMLAnchorElement | null;

@@ -68,9 +68,7 @@ const props = defineProps<JobsPageProps>()
 }
 
 .frosted-container {
-  background-color: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(209, 213, 219, 0.5);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 2px solid #414D5D;;
+
 }
 </style>

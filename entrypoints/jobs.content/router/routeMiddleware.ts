@@ -2,7 +2,7 @@ import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 import { usePagePropsStore } from "@/entrypoints/jobs.content/stores/pagePropsStore";
 import { jobService } from "@/entrypoints/jobs.content/services/JobService";
 // import { jobService } from "@/entrypoints/jobs.content/services/MockJobService";
-import { JOBS, JOB_VIEW } from "@/entrypoints/jobs.content/constants/pageNames";
+import {JOBS,JOB_VIEW} from "@/entrypoints/jobs.content/constants/pageNames";
 
 export const fetchJobListMiddleware = async (
     to: RouteLocationNormalized,
