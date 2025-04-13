@@ -73,6 +73,20 @@ const parseJobDescriptionFromJobDiv = (jobDiv: HTMLDivElement): ParsedJobView =>
     };
 }
 
+export function shouldRefetchJobView(description: string, jobId: string): string | null {
+    const doc = new DOMParser().parseFromString(description, 'text/html');
+    const link = Array.from(doc.querySelectorAll('a')).find(a => {
+        const href = a.getAttribute('href');
+        const match = href?.match(/^\/([a-z]{2})\/ads\/\?view=jobs&id=(\d+)$/);
+        return match?.[2] === jobId;
+    });
+
+    return link
+        ? link.getAttribute('href')!.match(/^\/([a-z]{2})\//)![1]
+        : null;
+}
+
+
 export default function jobViewPageParser(page: Document): ParsedJobView {
     const jobDiv = page.getElementById('job') as HTMLDivElement;
     return parseJobDescriptionFromJobDiv(jobDiv)

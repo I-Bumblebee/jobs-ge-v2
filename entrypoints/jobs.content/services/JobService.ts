@@ -1,5 +1,8 @@
 import jobListTableParser, {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
-import jobViewPageParser, {ParsedJobView} from "@/entrypoints/jobs.content/parsers/jobviewPageParser";
+import jobViewPageParser, {
+    ParsedJobView,
+    shouldRefetchJobView
+} from "@/entrypoints/jobs.content/parsers/jobviewPageParser";
 import {cookieManager} from "@/entrypoints/jobs.content/services/CookieManager";
 import {buildJobViewUrl, buildJobListUrl} from "@/entrypoints/jobs.content/utils/urlUtils";
 
@@ -22,14 +25,23 @@ export class JobService {
         }
     }
 
-    async fetchJobById(jobId: string): Promise<ParsedJobView> {
+    async fetchJobById(jobId: string, locale?: string): Promise<ParsedJobView> {
         try {
-            const response = await fetch(buildJobViewUrl(jobId, this.getLocal()));
+            const response = await fetch(buildJobViewUrl(jobId, locale || this.getLocal()));
             const rawHtml = await response.text();
 
             const parser = new DOMParser();
             const doc = parser.parseFromString(rawHtml, 'text/html');
-            return jobViewPageParser(doc);
+            const parsedJobView = jobViewPageParser(doc);
+
+            let availableLocale;
+
+            // if exact locale wasn't specified and job description is not available in locale selected by user automatically re-fetch job description in available locale
+            if (!locale && (availableLocale = shouldRefetchJobView(parsedJobView.description, jobId))) {
+                return this.fetchJobById(jobId, availableLocale)
+            }
+
+            return parsedJobView;
         } catch (error) {
             console.error(`Error fetching job with ID ${jobId}:`, error);
             throw error;

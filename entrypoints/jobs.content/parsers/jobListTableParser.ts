@@ -86,8 +86,12 @@ const parseJobListTableRow = (row: HTMLTableRowElement): ParsedJobRow => {
 }
 
 export default function jobListTableParser(page: Document): ParsedJobRow[] {
-    const jobTable = page.getElementById("job_list_table") as HTMLTableElement;
-    const rows = jobTable.rows;
+    const jobTablePrimary = page.getElementById("job_list_table");
+    const jobTableFallback=document.querySelector(".regularEntries")?.querySelector("table")
+
+    const jobTable = (jobTablePrimary || jobTableFallback) as HTMLTableElement;
+
+    const rows = (jobTable).rows;
 
     const results = [];
 
