@@ -12,7 +12,7 @@ interface JobMetadata {
 interface JobCompany {
     name: string;
     jobsUrl: string;
-    logoSrc: string;
+    logoUrl: string;
 }
 
 export interface ParsedJobRow {
@@ -76,7 +76,7 @@ const parseJobListTableRow = (row: HTMLTableRowElement): ParsedJobRow => {
         company: {
             name: companyName,
             jobsUrl: companyJobsUrl,
-            logoSrc: companyLogoSrc,
+            logoUrl: companyLogoSrc,
         },
         dates: {
             published: parseDate(publishDateStr),
@@ -87,7 +87,7 @@ const parseJobListTableRow = (row: HTMLTableRowElement): ParsedJobRow => {
 
 export default function jobListTableParser(page: Document): ParsedJobRow[] {
     const jobTablePrimary = page.getElementById("job_list_table");
-    const jobTableFallback=document.querySelector(".regularEntries")?.querySelector("table")
+    const jobTableFallback= page.querySelector(".regularEntries")?.querySelector("table")
 
     const jobTable = (jobTablePrimary || jobTableFallback) as HTMLTableElement;
 

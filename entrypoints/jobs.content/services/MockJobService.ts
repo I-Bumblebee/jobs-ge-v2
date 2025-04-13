@@ -19,7 +19,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "TechCorp Inc.",
             jobsUrl: "https://techcorp.com/careers",
-            logoSrc: "https://techcorp.com/logo.png"
+            logoUrl: "https://techcorp.com/logo.png"
         },
         dates: {
             published:now,
@@ -41,7 +41,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "CloudSystems Ltd.",
             jobsUrl: "https://cloudsystems.io/jobs",
-            logoSrc: "https://cloudsystems.io/images/logo.svg"
+            logoUrl: "https://cloudsystems.io/images/logo.svg"
         },
         dates: {
             published:now,
@@ -63,7 +63,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "DataVision Analytics",
             jobsUrl: "https://datavision.ai/careers",
-            logoSrc: "https://datavision.ai/brand/logo.png"
+            logoUrl: "https://datavision.ai/brand/logo.png"
         },
         dates: {
             published:now,
@@ -85,7 +85,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "Creative Design Studio",
             jobsUrl: "https://creativedesign.co/openings",
-            logoSrc: "https://creativedesign.co/assets/logo-2x.png"
+            logoUrl: "https://creativedesign.co/assets/logo-2x.png"
         },
         dates: {
             published:now,
@@ -107,7 +107,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "ServerStack Technologies",
             jobsUrl: "https://serverstack.tech/jobs",
-            logoSrc: "https://serverstack.tech/media/logo.jpg"
+            logoUrl: "https://serverstack.tech/media/logo.jpg"
         },
         dates: {
             published:now,
@@ -129,7 +129,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "Innovate Software Solutions",
             jobsUrl: "https://innovatesoftware.com/careers",
-            logoSrc: "https://innovatesoftware.com/static/logo.png"
+            logoUrl: "https://innovatesoftware.com/static/logo.png"
         },
         dates: {
             published:now,
@@ -151,7 +151,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "AI Futures Corp",
             jobsUrl: "https://aifutures.corp/join-us",
-            logoSrc: "https://aifutures.corp/branding/logo-dark.svg"
+            logoUrl: "https://aifutures.corp/branding/logo-dark.svg"
         },
         dates: {
             published:now,
@@ -173,7 +173,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "Midway Products Group",
             jobsUrl: "https://midwayproducts.com/opportunities",
-            logoSrc: "https://midwayproducts.com/images/brand/logo.png"
+            logoUrl: "https://midwayproducts.com/images/brand/logo.png"
         },
         dates: {
             published:now,
@@ -195,7 +195,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "SecureCloud Solutions",
             jobsUrl: "https://securecloud.io/careers",
-            logoSrc: "https://securecloud.io/assets/logo.png"
+            logoUrl: "https://securecloud.io/assets/logo.png"
         },
         dates: {
             published:now,
@@ -217,7 +217,7 @@ const jobs: ParsedJobRow[] = [
         company: {
             name: "MobileFirst Apps",
             jobsUrl: "https://mobilefirst.dev/jobs",
-            logoSrc: "https://mobilefirst.dev/public/logo.svg"
+            logoUrl: "https://mobilefirst.dev/public/logo.svg"
         },
         dates: {
             published:now,

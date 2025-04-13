@@ -1,4 +1,3 @@
-
 <script lang="ts">
 export const JobsPageSymbol = Symbol('JobsPage');
 </script>
@@ -13,6 +12,9 @@ export interface JobsPageProps {
 }
 
 const props = defineProps<JobsPageProps>()
+
+
+// TODO: If route.props.jobId becomes null navigate to jobId: props.jobList[0]?.id
 </script>
 
 <template>

@@ -3,7 +3,6 @@ import {ref} from 'vue'
 import placeholderLogo from "@/assets/company-logo-placeholder.png"
 import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
 import {useFavorites} from "@/entrypoints/jobs.content/composables/useFavorites";
-import {JOB_VIEW_IN_LIST} from "@/entrypoints/jobs.content/router";
 import {getPublishTimeText} from "../utils/dateUtils";
 import StarIcon from "@/entrypoints/jobs.content/components/icons/StarIcon.vue";
 
@@ -31,7 +30,7 @@ const toggleFavorite = () => {
 
 <template>
   <RouterLink
-      :to="{ name: JOB_VIEW_IN_LIST, params: { id: job.id } }"
+      :to="`./${job.id}`"
       class="max-w-[28rem] cursor-pointer bg-[#161C24] hover:bg-[#212A36] hover:rounded-[1.2rem] hover:shadow-md transition-all duration-300"
       @click="() => emit('card-click', props.job.id)"
   >
@@ -39,7 +38,7 @@ const toggleFavorite = () => {
       <div class="w-24 h-24 flex-shrink-0 relative">
         <div class="mask-container">
           <img
-              :src="job.company.logoSrc || placeholderLogo"
+              :src="job.company.logoUrl || placeholderLogo"
               alt="Company Logo"
               class="company-logo"
           />

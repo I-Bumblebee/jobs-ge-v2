@@ -2,17 +2,20 @@ import {defineStore} from 'pinia'
 import {JobsPageProps, JobsPageSymbol} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
 import {JobViewPageProps, JobViewPageSymbol} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
 import {HomePageProps, HomePageSymbol} from "@/entrypoints/jobs.content/pages/HomePage.vue";
+import {CompanyPageProps, CompanyPageSymbol} from "@/entrypoints/jobs.content/pages/CompanyPage.vue";
 
 type ComponentSymbol =
     | typeof HomePageSymbol
     | typeof JobsPageSymbol
     | typeof JobViewPageSymbol
+    | typeof CompanyPageSymbol
     ;
 
 type PagePropsMap = {
     [HomePageSymbol]: HomePageProps;
     [JobsPageSymbol]: JobsPageProps;
     [JobViewPageSymbol]: JobViewPageProps;
+    [CompanyPageSymbol]: CompanyPageProps;
 }
 
 interface PagePropsState {

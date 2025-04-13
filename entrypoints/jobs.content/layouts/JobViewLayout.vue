@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="bg-red-800/15 rounded-3xl">
+  <div class="rounded-3xl">
     <RouterView />
   </div>
 </template>

@@ -3,18 +3,18 @@ export const JobViewPageSymbol = Symbol('JobViewPage');
 </script>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 import {ParsedJobView} from "@/entrypoints/jobs.content/parsers/jobviewPageParser";
 import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import {getDeadlineText, getPublishTimeText} from "@/entrypoints/jobs.content/utils/dateUtils";
-import {provideJobViewPageProps} from "@/entrypoints/jobs.content/router/routeMiddleware";
 import StarIcon from "@/entrypoints/jobs.content/components/icons/StarIcon.vue";
-import {buildCompanyProfileUrl, buildJobViewUrl} from "../utils/urlUtils";
+import {buildJobViewUrl} from "../utils/urlUtils";
 import LinkPlusIcon from "@/entrypoints/jobs.content/components/icons/LinkPlusIcon.vue";
 import ExternalLinkIcon from "@/entrypoints/jobs.content/components/icons/ExternalLinkIcon.vue";
 import ListSearchIcon from "@/entrypoints/jobs.content/components/icons/ListSearchIcon.vue";
-import {JOB_VIEW} from "@/entrypoints/jobs.content/router"
+import {COMPANY_JOB_VIEW, JOB_VIEW, JOB_VIEW_MIDDLEWARE} from "@/entrypoints/jobs.content/router"
 import {useJobDescriptionTransformer} from "@/entrypoints/jobs.content/composables/useJobDescriptionTransformer";
+import {provideJobViewPageProps} from "@/entrypoints/jobs.content/router/routeMiddleware";
 
 
 export interface JobViewPageProps {
@@ -53,7 +53,7 @@ onBeforeRouteUpdate(provideJobViewPageProps)
       <div class="flex items-center gap-1">
         <!-- Open in New Tab -->
         <a
-            :href="router.resolve({ name: JOB_VIEW, params: { id: jobDescription.id } }).href"
+            :href="router.resolve({ name: JOB_VIEW, params: { jobId: jobDescription.id } }).href"
             target="_blank"
             class="p-2 rounded-full hover:bg-[#212A36] transition-colors"
         >
@@ -62,14 +62,16 @@ onBeforeRouteUpdate(provideJobViewPageProps)
 
         <!-- Copy Link -->
         <button @click="copyLink" class="p-2 rounded-full hover:bg-[#212A36] transition-colors relative">
-          <LinkPlusIcon class="stroke-gray-500 hover:stroke-green-500 transition-colors stroke-[1.5px]"
-                        :class="{ 'stroke-green-500': copied }"/>
+          <LinkPlusIcon
+              class="stroke-gray-500 hover:stroke-green-500 transition-colors stroke-[1.5px]"
+              :class="{ 'stroke-green-500': copied }"
+          />
         </button>
 
         <!-- View Company Listings -->
         <a
             v-if="jobDescription.company.id"
-            :href="buildCompanyProfileUrl(jobDescription.company.id)"
+            :href="router.resolve({name: COMPANY_JOB_VIEW, params: {companyId: jobDescription.company.id, jobId: jobDescription.id}}).href"
             target="_blank"
             class="p-2 rounded-full hover:bg-[#212A36] transition-colors"
         >
