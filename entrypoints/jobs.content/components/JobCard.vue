@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, ref} from 'vue'
+import {ref} from 'vue'
 import placeholderLogo from "@/assets/company-logo-placeholder.png"
 import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
 import {useFavorites} from "@/entrypoints/jobs.content/composables/useFavorites";
-import {JOB_VIEW_IN_LIST} from "@/entrypoints/jobs.content/constants/pageNames";
+import {JOB_VIEW_IN_LIST} from "@/entrypoints/jobs.content/router";
 import {getPublishTimeText} from "../utils/dateUtils";
 import StarIcon from "@/entrypoints/jobs.content/components/icons/StarIcon.vue";
 
@@ -19,13 +19,13 @@ const {addFavorite, removeFavorite} = useFavorites()
 const isFavorite = ref(props.job.metadata.isFavorite);
 
 const toggleFavorite = () => {
-  // if (isFavorite.value) {
-  //   isFavorite.value = false;
-  //   removeFavorite(String(props.job.id));
-  // } else {
-  //   isFavorite.value = true;
-  //   addFavorite(String(props.job.id));
-  // }
+  if (isFavorite.value) {
+    isFavorite.value = false;
+    removeFavorite(String(props.job.id));
+  } else {
+    isFavorite.value = true;
+    addFavorite(String(props.job.id));
+  }
 }
 </script>
 

@@ -1,10 +1,11 @@
-import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
-import { usePagePropsStore } from "@/entrypoints/jobs.content/stores/pagePropsStore";
-import { jobService } from "@/entrypoints/jobs.content/services/JobService";
-// import { jobService } from "@/entrypoints/jobs.content/services/MockJobService";
-import {JOBS,JOB_VIEW} from "@/entrypoints/jobs.content/constants/pageNames";
+import {NavigationGuardNext, RouteLocationNormalized} from 'vue-router';
+import {usePagePropsStore} from "@/entrypoints/jobs.content/stores/pagePropsStore";
+import {jobService} from "@/entrypoints/jobs.content/services/JobService";
+import {HOME, JOBS} from "@/entrypoints/jobs.content/router";
+import {JobViewPageSymbol} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
+import {JobsPageSymbol} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
 
-export const fetchJobListMiddleware = async (
+export const provideJobsPageProps = async (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
     next: NavigationGuardNext
@@ -12,15 +13,15 @@ export const fetchJobListMiddleware = async (
     try {
         const pagePropsStore = usePagePropsStore();
         const jobList = await jobService.fetchJobList();
-        pagePropsStore.setPageProps(JOBS, { jobList });
+        pagePropsStore.setPageProps(JobsPageSymbol, { jobList });
         next();
     } catch (e) {
         console.error('Error in fetchJobListMiddleware:', e);
-        next({ name: JOBS });
+        next({ name: HOME });
     }
 };
 
-export const fetchJobByIdMiddleware = async (
+export const provideJobViewPageProps = async (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
     next: NavigationGuardNext
@@ -29,7 +30,8 @@ export const fetchJobByIdMiddleware = async (
         const jobId = to.params.id as string;
         const pagePropsStore = usePagePropsStore();
         const jobDescription = await jobService.fetchJobById(jobId);
-        pagePropsStore.setPageProps(JOB_VIEW, { jobDescription });
+        pagePropsStore.setPageProps(JobViewPageSymbol, {jobDescription});
+
         next();
     } catch (e) {
         console.error('Error in fetchJobByIdMiddleware:', e);

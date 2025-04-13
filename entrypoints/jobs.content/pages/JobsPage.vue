@@ -1,6 +1,12 @@
+
+<script lang="ts">
+export const JobsPageSymbol = Symbol('JobsPage');
+</script>
+
 <script setup lang="ts">
 import JobCard from "@/entrypoints/jobs.content/components/JobCard.vue";
 import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
+
 
 export interface JobsPageProps {
   jobList: ParsedJobRow[]

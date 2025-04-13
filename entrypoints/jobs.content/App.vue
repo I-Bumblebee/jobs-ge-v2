@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {HOME, JOBS} from "@/entrypoints/jobs.content/constants/pageNames"
+import {HOME, JOBS} from "@/entrypoints/jobs.content/router"
 </script>
 
 <template>

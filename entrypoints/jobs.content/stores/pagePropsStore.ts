@@ -1,19 +1,23 @@
 import {defineStore} from 'pinia'
-import {HOME, PageName, JOBS, JOB_VIEW_IN_LIST, JOB_VIEW} from '@/entrypoints/jobs.content/constants/pageNames'
-import {JobsPageProps} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
-import {JobViewPageProps} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
-import {HomePageProps} from "@/entrypoints/jobs.content/pages/HomePage.vue";
+import {JobsPageProps, JobsPageSymbol} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
+import {JobViewPageProps, JobViewPageSymbol} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
+import {HomePageProps, HomePageSymbol} from "@/entrypoints/jobs.content/pages/HomePage.vue";
+
+type ComponentSymbol =
+    | typeof HomePageSymbol
+    | typeof JobsPageSymbol
+    | typeof JobViewPageSymbol
+    ;
 
 type PagePropsMap = {
-    [JOBS]: JobsPageProps
-    [JOB_VIEW_IN_LIST]: JobViewPageProps
-    [JOB_VIEW]: JobViewPageProps
-    [HOME]: HomePageProps
+    [HomePageSymbol]: HomePageProps;
+    [JobsPageSymbol]: JobsPageProps;
+    [JobViewPageSymbol]: JobViewPageProps;
 }
 
 interface PagePropsState {
-    commonData: string
-    pageProps: Partial<PagePropsMap>
+    commonData: string;
+    pageProps: Partial<PagePropsMap>;
 }
 
 export const usePagePropsStore = defineStore('pageProps', {
@@ -23,21 +27,21 @@ export const usePagePropsStore = defineStore('pageProps', {
     }),
 
     actions: {
-        setPageProps<K extends PageName>(
-            pageName: K,
-            props: PagePropsMap[K]
+        setPageProps<S extends ComponentSymbol>(
+            componentSymbol: S,
+            props: PagePropsMap[S]
         ) {
-            this.pageProps[pageName] = props;
+            this.pageProps[componentSymbol] = props;
         },
 
-        clearPageData(pageName: PageName) {
-            delete this.pageProps[pageName];
+        clearPageData(componentSymbol: ComponentSymbol) {
+            delete this.pageProps[componentSymbol];
         }
     },
 
     getters: {
-        getPageProps: (state) => <K extends PageName>(pageName: K): PagePropsMap[K] => {
-            return state.pageProps[pageName] as PagePropsMap[K]
+        getPageProps: (state) => <S extends ComponentSymbol>(componentSymbol: S): PagePropsMap[S] => {
+            return state.pageProps[componentSymbol] as PagePropsMap[S];
         }
     }
-})
+});
