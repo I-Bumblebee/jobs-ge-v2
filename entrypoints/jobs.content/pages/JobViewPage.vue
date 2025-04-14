@@ -12,7 +12,7 @@ import {buildJobViewUrl} from "../utils/urlUtils";
 import LinkPlusIcon from "@/entrypoints/jobs.content/components/icons/LinkPlusIcon.vue";
 import ExternalLinkIcon from "@/entrypoints/jobs.content/components/icons/ExternalLinkIcon.vue";
 import ListSearchIcon from "@/entrypoints/jobs.content/components/icons/ListSearchIcon.vue";
-import {COMPANY_JOB_VIEW, JOB_VIEW, JOB_VIEW_MIDDLEWARE} from "@/entrypoints/jobs.content/router"
+import {COMPANY_JOB_VIEW, JOB_VIEW} from "@/entrypoints/jobs.content/router"
 import {useJobDescriptionTransformer} from "@/entrypoints/jobs.content/composables/useJobDescriptionTransformer";
 import {provideJobViewPageProps} from "@/entrypoints/jobs.content/router/routeMiddleware";
 
@@ -25,12 +25,9 @@ const props = defineProps<JobViewPageProps>();
 
 const router = useRouter();
 
-const isFavorite = ref(props.jobDescription.isFavorite);
-const copied = ref(false);
+const isFavorite = computed(() => props.jobDescription.isFavorite);
 
-const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value;
-}
+const copied = ref(false);
 
 const copyLink = () => {
   navigator.clipboard.writeText(buildJobViewUrl(props.jobDescription.id));
@@ -85,7 +82,6 @@ onBeforeRouteUpdate(provideJobViewPageProps)
         <!-- Favorite Button -->
         <button
             class="p-2 rounded-full hover:bg-[#212A36] transition-colors"
-            @click="toggleFavorite"
         >
           <StarIcon
               class="stroke-gray-500 fill-none hover:stroke-yellow-500 transition-colors stroke-2"

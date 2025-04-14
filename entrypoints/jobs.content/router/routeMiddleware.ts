@@ -1,7 +1,7 @@
 import {NavigationGuardNext, RouteLocationNormalized} from 'vue-router';
 import {usePagePropsStore} from "@/entrypoints/jobs.content/stores/pagePropsStore";
 import {jobService} from "@/entrypoints/jobs.content/services/JobService";
-import {HOME, JOBS} from "@/entrypoints/jobs.content/router";
+import {JOBS} from "@/entrypoints/jobs.content/router";
 import {JobViewPageSymbol} from "@/entrypoints/jobs.content/pages/JobViewPage.vue";
 import {JobsPageSymbol} from "@/entrypoints/jobs.content/pages/JobsPage.vue";
 import {CompanyPageProps, CompanyPageSymbol} from "@/entrypoints/jobs.content/pages/CompanyPage.vue";
@@ -19,7 +19,6 @@ export const provideJobsPageProps = async (
         next();
     } catch (e) {
         console.error('Error in provideJobsPageProps:', e);
-        next({ name: HOME });
     }
 };
 

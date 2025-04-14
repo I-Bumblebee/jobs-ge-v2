@@ -11,7 +11,7 @@ import {COMPANY_JOB_VIEW} from "@/entrypoints/jobs.content/router";
 export interface CompanyPageProps {
   companyInfo: ParsedCompanyInfo;
   companyJobs: ParsedJobRow[];
-};
+}
 
 const props = defineProps<CompanyPageProps>();
 
