@@ -5,7 +5,8 @@ export const JobsPageSymbol = Symbol('JobsPage');
 <script setup lang="ts">
 import JobCard from "@/entrypoints/jobs.content/components/JobCard.vue";
 import {ParsedJobRow} from "@/entrypoints/jobs.content/parsers/jobListTableParser";
-
+import {JOB_VIEW_IN_LIST} from "@/entrypoints/jobs.content/router";
+import {useRouteParamWatch} from "@/entrypoints/jobs.content/composables/useRouterParamWatch";
 
 export interface JobsPageProps {
   jobList: ParsedJobRow[]
@@ -13,8 +14,14 @@ export interface JobsPageProps {
 
 const props = defineProps<JobsPageProps>()
 
-
-// TODO: If route.props.jobId becomes null navigate to jobId: props.jobList[0]?.id
+useRouteParamWatch('jobId', (newJobId, { replace }) => {
+  if (!newJobId && props.jobList.length > 0) {
+    void replace({
+      name: JOB_VIEW_IN_LIST,
+      params: { jobId: props.jobList[0]?.id }
+    });
+  }
+});
 </script>
 
 <template>
